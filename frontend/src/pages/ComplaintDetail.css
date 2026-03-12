@@ -1,0 +1,253 @@
+.detail-page {
+  min-height: 100vh;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(247, 198, 94, 0.36), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(58, 143, 137, 0.28), transparent 35%),
+    linear-gradient(145deg, #f8f5e6 0%, #e9f3ef 100%);
+}
+
+.detail-shell {
+  width: min(1080px, 100%);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(29, 43, 58, 0.16);
+  box-shadow: 0 20px 40px rgba(33, 43, 51, 0.15);
+  overflow: hidden;
+  animation: panel-rise 520ms ease;
+}
+
+.detail-header {
+  padding: 1.8rem 2rem;
+  background: linear-gradient(140deg, #113a37 10%, #1f625e 70%, #377f7a 100%);
+  color: #eefaf6;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.detail-header h1 {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.detail-meta {
+  margin: 0.4rem 0 0;
+  color: rgba(238, 250, 246, 0.88);
+  font-size: 0.9rem;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.light-btn {
+  border: 1px solid rgba(238, 250, 246, 0.55);
+  border-radius: 10px;
+  padding: 0.52rem 0.9rem;
+  font-weight: 700;
+  color: #eefaf6;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.light-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.detail-form {
+  padding: 1.6rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(29, 43, 58, 0.12);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.detail-card h2 {
+  margin: 0 0 0.75rem;
+  color: #0f332f;
+  font-size: 1rem;
+}
+
+.detail-card label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  color: #22423b;
+  font-weight: 700;
+}
+
+.detail-card input,
+.detail-card select,
+.detail-card textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #c5d3cf;
+  padding: 0.68rem 0.82rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.detail-card input:focus,
+.detail-card select:focus,
+.detail-card textarea:focus {
+  outline: 2px solid #4c9e8d;
+  outline-offset: 1px;
+}
+
+.detail-card .input-invalid {
+  border-color: #c7495a;
+  background: #fff6f7;
+}
+
+.detail-card .input-invalid:focus {
+  outline: 2px solid #c7495a;
+}
+
+.field-error-text {
+  font-size: 0.78rem;
+  color: #812834;
+  font-weight: 600;
+}
+
+.section-error-text {
+  margin: 0.35rem 0 0;
+  color: #812834;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.grid-2 > label > input,
+.grid-2 > label > select {
+  min-height: 42px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 0.35fr 1fr 0.35fr;
+  gap: 0.8rem;
+}
+
+.row-group {
+  background: #fff;
+  border: 1px solid #c5d3cf;
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.row-add-btn,
+.row-remove-btn {
+  border-radius: 8px;
+  font-weight: 700;
+  padding: 0.35rem 0.82rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.row-add-btn {
+  border: 1px dashed rgba(31, 98, 94, 0.5);
+  color: #1f625e;
+  background: transparent;
+}
+
+.row-remove-btn {
+  margin-top: 0.5rem;
+  border: 1px solid rgba(176, 50, 50, 0.3);
+  color: #812834;
+  background: rgba(176, 50, 50, 0.05);
+}
+
+.check-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.8rem;
+}
+
+.check-item {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500 !important;
+}
+
+.check-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1f625e;
+}
+
+.detail-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback {
+  margin: 0;
+  padding: 0.55rem 0.72rem;
+  border-radius: 9px;
+  font-size: 0.9rem;
+}
+
+.feedback.ok {
+  background: #e9f9f0;
+  color: #1f5a43;
+}
+
+.feedback.err {
+  background: #fce9ea;
+  color: #812834;
+}
+
+.detail-loading {
+  margin: 0;
+  padding: 2rem;
+  color: #355349;
+  font-weight: 700;
+}
+
+@keyframes panel-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 860px) {
+  .detail-page {
+    padding: 1rem;
+  }
+
+  .detail-form {
+    padding: 1rem;
+  }
+
+  .grid-2,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
