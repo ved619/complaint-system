@@ -115,6 +115,7 @@ function Dashboard() {
     resolved: complaints.filter((c) => c.status === "RESOLVED").length,
   };
 
+  
   const pageTitle =
     activeNav === "all" ? "All Complaints" : "My Complaints";
 

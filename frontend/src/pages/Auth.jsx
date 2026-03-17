@@ -115,15 +115,6 @@ function Auth() {
         <aside className="auth-info">
           <p className="eyebrow">Complaint System</p>
           <h1>Service Portal Access</h1>
-          <p>
-            Use this sample page to authenticate engineers and admins before
-            opening the complaint workflow.
-          </p>
-          <div className="chip-row">
-            <span className="chip">JWT Auth</span>
-            <span className="chip">Role Aware</span>
-            <span className="chip">API Ready</span>
-          </div>
         </aside>
 
         <section className="auth-card" aria-label="Authentication form">
@@ -209,8 +200,6 @@ function Auth() {
 
           {message ? <p className="feedback ok">{message}</p> : null}
           {error ? <p className="feedback err">{error}</p> : null}
-
-          <p className="api-hint">Auth API base: {API_BASE_URL}</p>
         </section>
       </section>
     </main>

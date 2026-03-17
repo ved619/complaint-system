@@ -3,10 +3,7 @@
   padding: 2rem;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(247, 198, 94, 0.36), transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(58, 143, 137, 0.28), transparent 35%),
-    linear-gradient(145deg, #f8f5e6 0%, #e9f3ef 100%);
+  background: #eef3ef;
 }
 
 .detail-shell {
@@ -21,7 +18,7 @@
 
 .detail-header {
   padding: 1.8rem 2rem;
-  background: linear-gradient(140deg, #113a37 10%, #1f625e 70%, #377f7a 100%);
+  background: #1f625e;
   color: #eefaf6;
   display: flex;
   justify-content: space-between;

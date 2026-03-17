@@ -30,7 +30,7 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: 1.8rem 2.2rem 1.4rem;
-  background: linear-gradient(140deg, #113a37 10%, #1f625e 70%, #377f7a 100%);
+  background: #1f625e;
   color: #eefaf6;
   flex-shrink: 0;
 }
@@ -292,7 +292,7 @@
   font-weight: 800;
   font-size: 0.9rem;
   color: #0e2e2a;
-  background: linear-gradient(90deg, #f2b64f 0%, #e8d267 100%);
+  background: #e8d267;
   cursor: pointer;
   transition: transform 160ms ease;
 }
