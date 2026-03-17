@@ -26,7 +26,6 @@ function Auth() {
     name: "",
     email: "",
     password: "",
-    role: "ENGINEER",
   });
 
   const endpoint = useMemo(() => {
@@ -74,7 +73,7 @@ function Auth() {
             name: form.name,
             email: form.email,
             password: form.password,
-            role: form.role,
+            role: "ENGINEER",
           };
 
     try {
@@ -178,16 +177,6 @@ function Auth() {
                 placeholder="At least 6 characters"
               />
             </label>
-
-            {mode === "register" && (
-              <label>
-                Role
-                <select name="role" value={form.role} onChange={onChange}>
-                  <option value="ENGINEER">ENGINEER</option>
-                  <option value="ADMIN">ADMIN</option>
-                </select>
-              </label>
-            )}
 
             <button className="submit-btn" type="submit" disabled={isSubmitting}>
               {isSubmitting

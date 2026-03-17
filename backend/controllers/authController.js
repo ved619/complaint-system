@@ -1,9 +1,26 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import User from "../models/User.js";
+
+const DB_UNAVAILABLE_MESSAGE =
+  "Database is unavailable right now. Please try again in a moment.";
+
+function ensureDbConnected(res) {
+  // 1 means mongoose is connected; return early to avoid buffered query timeouts.
+  if (mongoose.connection.readyState !== 1) {
+    res.status(503).json({ message: DB_UNAVAILABLE_MESSAGE });
+    return false;
+  }
+  return true;
+}
 
 export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
+
+  if (!ensureDbConnected(res)) {
+    return;
+  }
 
   console.log("🔵 REGISTER REQUEST RECEIVED:", { name, email, role });
 
@@ -33,6 +50,10 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+
+  if (!ensureDbConnected(res)) {
+    return;
+  }
 
   try {
     const user = await User.findOne({ email });

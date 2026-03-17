@@ -408,9 +408,10 @@ function ComplaintDetail() {
                       min="0"
                       className={getFieldError(`spares.${index}.replacedQty`) ? "input-invalid" : ""}
                       value={spare.replacedQty ?? 0}
-                      onChange={(event) =>
-                        updateSpare(index, "replacedQty", Number(event.target.value) || 0)
-                      }
+                      onChange={(event) => {
+                        const nextValue = event.target.value;
+                        updateSpare(index, "replacedQty", nextValue === "" ? "" : Number(nextValue));
+                      }}
                     />
                     {getFieldError(`spares.${index}.replacedQty`) && (
                       <span className="field-error-text">{getFieldError(`spares.${index}.replacedQty`)}</span>
@@ -430,9 +431,10 @@ function ComplaintDetail() {
                       min="0"
                       className={getFieldError(`spares.${index}.requiredQty`) ? "input-invalid" : ""}
                       value={spare.requiredQty ?? 0}
-                      onChange={(event) =>
-                        updateSpare(index, "requiredQty", Number(event.target.value) || 0)
-                      }
+                      onChange={(event) => {
+                        const nextValue = event.target.value;
+                        updateSpare(index, "requiredQty", nextValue === "" ? "" : Number(nextValue));
+                      }}
                     />
                     {getFieldError(`spares.${index}.requiredQty`) && (
                       <span className="field-error-text">{getFieldError(`spares.${index}.requiredQty`)}</span>
@@ -468,10 +470,14 @@ function ComplaintDetail() {
                   type="number"
                   min="0"
                   className={getFieldError("charges.charges") ? "input-invalid" : ""}
-                  value={charges.charges ?? 0}
+                  value={charges.charges ?? ""}
                   onChange={(event) => {
                     clearFieldError("charges.charges");
-                    setCharges((previous) => ({ ...previous, charges: Number(event.target.value) || 0 }));
+                    const nextValue = event.target.value;
+                    setCharges((previous) => ({
+                      ...previous,
+                      charges: nextValue === "" ? "" : Number(nextValue),
+                    }));
                   }}
                 />
                 {getFieldError("charges.charges") && (
@@ -485,10 +491,14 @@ function ComplaintDetail() {
                   min="0"
                   max="100"
                   className={getFieldError("charges.gst") ? "input-invalid" : ""}
-                  value={charges.gst ?? 0}
+                  value={charges.gst ?? ""}
                   onChange={(event) => {
                     clearFieldError("charges.gst");
-                    setCharges((previous) => ({ ...previous, gst: Number(event.target.value) || 0 }));
+                    const nextValue = event.target.value;
+                    setCharges((previous) => ({
+                      ...previous,
+                      gst: nextValue === "" ? "" : Number(nextValue),
+                    }));
                   }}
                 />
                 {getFieldError("charges.gst") && (

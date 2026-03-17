@@ -47,13 +47,14 @@
   },
   "build": {
     "appId": "com.complaint-system.app",
-    "productName": "Complaint System",
+    "productName": "complaint-management-app",
     "directories": {
       "output": "release"
     },
     "files": [
       "dist/**/*",
-      "dist-electron/**/*"
+      "dist-electron/**/*",
+      "public/app-icon.png"
     ],
     "extraResources": [
       {
@@ -64,10 +65,15 @@
       {
         "from": "../backend/node_modules",
         "to": "backend/node_modules"
+      },
+      {
+        "from": "public/app-icon.png",
+        "to": "app-icon.png"
       }
     ],
     "win": {
       "target": "dir",
+      "icon": "public/app-icon.png",
       "signAndEditExecutable": false
     },
     "mac": {

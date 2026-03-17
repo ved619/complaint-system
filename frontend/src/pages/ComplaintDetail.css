@@ -96,6 +96,17 @@
   font-family: inherit;
 }
 
+.detail-card input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.detail-card input[type="number"]::-webkit-outer-spin-button,
+.detail-card input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .detail-card input:focus,
 .detail-card select:focus,
 .detail-card textarea:focus {

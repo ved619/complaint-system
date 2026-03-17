@@ -133,7 +133,6 @@
 .sidebar-item {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
   padding: 0.62rem 0.9rem;
   border-radius: 10px;
   font-size: 0.92rem;
@@ -155,11 +154,6 @@
 
 .sidebar-item.active {
   font-weight: 700;
-}
-
-.sidebar-icon {
-  font-size: 1rem;
-  opacity: 0.85;
 }
 
 /* ── Content area ─────────────────────────────────── */

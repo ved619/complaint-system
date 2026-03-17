@@ -70,8 +70,18 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
           systemDetails,
           items: items.filter((i) => i.itemName.trim()),
           diagnosisAndComments,
-          spares: spares.filter((s) => s.replaced.trim() || s.required.trim()),
-          charges,
+          spares: spares
+            .filter((s) => s.replaced.trim() || s.required.trim())
+            .map((s) => ({
+              ...s,
+              replacedQty: Number(s.replacedQty) || 0,
+              requiredQty: Number(s.requiredQty) || 0,
+            })),
+          charges: {
+            ...charges,
+            charges: Number(charges.charges) || 0,
+            gst: Number(charges.gst) || 0,
+          },
         }),
       });
       const data = await res.json();
@@ -265,7 +275,10 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
                       min="0"
                       className={getFieldError(`spares.${idx}.replacedQty`) ? "input-invalid" : ""}
                       value={spare.replacedQty}
-                      onChange={(e) => setSpare(idx, "replacedQty", Number(e.target.value))}
+                      onChange={(e) => {
+                        const nextValue = e.target.value;
+                        setSpare(idx, "replacedQty", nextValue === "" ? "" : Number(nextValue));
+                      }}
                     />
                     {getFieldError(`spares.${idx}.replacedQty`) && (
                       <span className="field-error-text">{getFieldError(`spares.${idx}.replacedQty`)}</span>
@@ -286,7 +299,10 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
                       min="0"
                       className={getFieldError(`spares.${idx}.requiredQty`) ? "input-invalid" : ""}
                       value={spare.requiredQty}
-                      onChange={(e) => setSpare(idx, "requiredQty", Number(e.target.value))}
+                      onChange={(e) => {
+                        const nextValue = e.target.value;
+                        setSpare(idx, "requiredQty", nextValue === "" ? "" : Number(nextValue));
+                      }}
                     />
                     {getFieldError(`spares.${idx}.requiredQty`) && (
                       <span className="field-error-text">{getFieldError(`spares.${idx}.requiredQty`)}</span>
@@ -318,7 +334,8 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
                   value={charges.charges}
                   onChange={(e) => {
                     clearFieldError("charges.charges");
-                    setCharges((p) => ({ ...p, charges: Number(e.target.value) }));
+                    const nextValue = e.target.value;
+                    setCharges((p) => ({ ...p, charges: nextValue === "" ? "" : Number(nextValue) }));
                   }}
                 />
                 {getFieldError("charges.charges") && (
@@ -335,7 +352,8 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
                   value={charges.gst}
                   onChange={(e) => {
                     clearFieldError("charges.gst");
-                    setCharges((p) => ({ ...p, gst: Number(e.target.value) }));
+                    const nextValue = e.target.value;
+                    setCharges((p) => ({ ...p, gst: nextValue === "" ? "" : Number(nextValue) }));
                   }}
                 />
                 {getFieldError("charges.gst") && (

@@ -26,6 +26,15 @@ function formatDate(iso) {
   });
 }
 
+function buildStats(list) {
+  return {
+    total: list.length,
+    open: list.filter((c) => c.status === "OPEN").length,
+    inprog: list.filter((c) => c.status === "IN_PROGRESS").length,
+    resolved: list.filter((c) => c.status === "RESOLVED").length,
+  };
+}
+
 function Dashboard() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,6 +46,8 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [adminOverviewStats, setAdminOverviewStats] = useState(null);
+  const [adminOverviewLoading, setAdminOverviewLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") || "");
   const [statusFilter, setStatusFilter] = useState(() => {
     const nextStatus = searchParams.get("status");
@@ -87,6 +98,45 @@ function Dashboard() {
     fetchComplaints(activeNav === "all" ? "all" : "my");
   }, [activeNav, fetchComplaints]);
 
+  useEffect(() => {
+    if (userRole !== "ADMIN" || activeNav !== "overview") {
+      return;
+    }
+
+    let isMounted = true;
+
+    async function fetchAdminOverviewStats() {
+      setAdminOverviewLoading(true);
+      try {
+        const response = await apiFetch(COMPLAINTS_API);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to load complaint summary");
+        }
+
+        if (!isMounted) {
+          return;
+        }
+
+        setAdminOverviewStats(buildStats(data));
+      } catch (error) {
+        if (isMounted) {
+          toast.error(error.message);
+        }
+      } finally {
+        if (isMounted) {
+          setAdminOverviewLoading(false);
+        }
+      }
+    }
+
+    fetchAdminOverviewStats();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeNav, apiFetch, toast, userRole]);
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this complaint? This cannot be undone.")) return;
     try {
@@ -108,12 +158,13 @@ function Dashboard() {
     fetchComplaints(activeNav === "all" ? "all" : "my");
   };
 
-  const stats = {
-    total: complaints.length,
-    open: complaints.filter((c) => c.status === "OPEN").length,
-    inprog: complaints.filter((c) => c.status === "IN_PROGRESS").length,
-    resolved: complaints.filter((c) => c.status === "RESOLVED").length,
-  };
+  const stats = useMemo(() => buildStats(complaints), [complaints]);
+  const overviewStats = userRole === "ADMIN" && adminOverviewStats
+    ? adminOverviewStats
+    : stats;
+  const overviewLoading = userRole === "ADMIN"
+    ? loading || adminOverviewLoading
+    : loading;
 
   
   const pageTitle =
@@ -266,13 +317,13 @@ function Dashboard() {
             className={`sidebar-item ${activeNav === "overview" ? "active" : ""}`}
             onClick={() => setActiveNav("overview")}
           >
-            <span className="sidebar-icon">◈</span> Overview
+            Overview
           </button>
           <button
             className={`sidebar-item ${activeNav === "complaints" ? "active" : ""}`}
             onClick={() => setActiveNav("complaints")}
           >
-            <span className="sidebar-icon">◷</span> My Complaints
+            My Complaints
           </button>
           {userRole === "ADMIN" && (
             <>
@@ -281,7 +332,7 @@ function Dashboard() {
                 className={`sidebar-item ${activeNav === "all" ? "active" : ""}`}
                 onClick={() => setActiveNav("all")}
               >
-                <span className="sidebar-icon">◈</span> All Complaints
+                All Complaints
               </button>
             </>
           )}
@@ -294,25 +345,29 @@ function Dashboard() {
             <>
               <div className="dash-welcome">
                 <h2>Welcome back, {userName}</h2>
-                <p>Here's a summary of your service complaints.</p>
+                <p>
+                  {userRole === "ADMIN"
+                    ? "Here's a summary of all complaints across the system."
+                    : "Here's a summary of your service complaints."}
+                </p>
               </div>
 
               <div className="stat-grid">
                 <div className="stat-card">
                   <p className="stat-label">Total</p>
-                  <p className="stat-value">{loading ? "…" : stats.total}</p>
+                  <p className="stat-value">{overviewLoading ? "…" : overviewStats.total}</p>
                 </div>
                 <div className="stat-card">
                   <p className="stat-label">Open</p>
-                  <p className="stat-value open">{loading ? "…" : stats.open}</p>
+                  <p className="stat-value open">{overviewLoading ? "…" : overviewStats.open}</p>
                 </div>
                 <div className="stat-card">
                   <p className="stat-label">In Progress</p>
-                  <p className="stat-value inprog">{loading ? "…" : stats.inprog}</p>
+                  <p className="stat-value inprog">{overviewLoading ? "…" : overviewStats.inprog}</p>
                 </div>
                 <div className="stat-card">
                   <p className="stat-label">Closed</p>
-                  <p className="stat-value resolved">{loading ? "…" : stats.resolved}</p>
+                  <p className="stat-value resolved">{overviewLoading ? "…" : overviewStats.resolved}</p>
                 </div>
               </div>
             </>

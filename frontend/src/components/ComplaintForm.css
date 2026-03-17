@@ -127,6 +127,18 @@
   transition: outline 120ms ease;
 }
 
+/* Remove browser spinner UI for numeric fields in the complaint form. */
+.cform input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.cform input[type="number"]::-webkit-outer-spin-button,
+.cform input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .cform input:focus,
 .cform textarea:focus,
 .cform select:focus {

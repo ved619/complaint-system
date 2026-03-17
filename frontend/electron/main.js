@@ -49,9 +49,15 @@ function startBackend() {
 }
 
 function createWindow() {
+  const iconPath = app.isPackaged
+    ? path.join(process.resourcesPath, "app-icon.png")
+    : path.join(__dirname, "..", "public", "app-icon.png");
+
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
+    icon: iconPath,
+    title: "complaint-management-app",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
