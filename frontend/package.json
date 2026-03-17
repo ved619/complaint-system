@@ -59,11 +59,16 @@
       {
         "from": "../backend",
         "to": "backend",
-        "filter": ["**/*", "!node_modules/**"]
+        "filter": ["**/*", "!node_modules/.cache/**", "!node_modules/.package-lock.json"]
+      },
+      {
+        "from": "../backend/node_modules",
+        "to": "backend/node_modules"
       }
     ],
     "win": {
-      "target": "nsis"
+      "target": "dir",
+      "signAndEditExecutable": false
     },
     "mac": {
       "target": "dmg"

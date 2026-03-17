@@ -7,13 +7,31 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let backendProcess = null;
 
+function getBackendDir() {
+  if (app.isPackaged) {
+    return path.join(process.resourcesPath, "backend");
+  }
+  return path.join(__dirname, "..", "..", "backend");
+}
+
 function startBackend() {
-  const backendDir = path.join(__dirname, "..", "..", "backend");
+  const backendDir = getBackendDir();
   const serverPath = path.join(backendDir, "server.js");
 
-  backendProcess = spawn("node", [serverPath], {
+  let command, args, env;
+  if (app.isPackaged) {
+    command = process.execPath;
+    args = [serverPath];
+    env = { ...process.env, ELECTRON_RUN_AS_NODE: "1" };
+  } else {
+    command = "node";
+    args = [serverPath];
+    env = { ...process.env };
+  }
+
+  backendProcess = spawn(command, args, {
     cwd: backendDir,
-    env: { ...process.env },
+    env,
     stdio: "pipe",
   });
 
@@ -35,7 +53,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, "preload.mjs"),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
     },
