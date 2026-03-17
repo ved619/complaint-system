@@ -17,8 +17,8 @@ export function validateComplaintForm({
 
   if (!isBlank(customerDetails?.contactNo)) {
     const digits = String(customerDetails.contactNo).replace(/\D/g, "");
-    if (digits.length < 10 || digits.length > 15) {
-      errors["customerDetails.contactNo"] = "Enter a valid contact number.";
+    if (digits.length !== 10) {
+      errors["customerDetails.contactNo"] = "Contact number must be exactly 10 digits.";
     }
   }
 

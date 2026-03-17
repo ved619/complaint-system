@@ -1,11 +1,14 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import { spawn } from "child_process";
+import pkg from "electron-updater";
+const { autoUpdater } = pkg;
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let backendProcess = null;
+let mainWindow = null;
 
 function getBackendDir() {
   if (app.isPackaged) {
@@ -49,9 +52,10 @@ function startBackend() {
 }
 
 function createWindow() {
+  const iconFileName = process.platform === "win32" ? "app-icon.ico" : "app-icon.png";
   const iconPath = app.isPackaged
-    ? path.join(process.resourcesPath, "app-icon.png")
-    : path.join(__dirname, "..", "public", "app-icon.png");
+    ? path.join(process.resourcesPath, iconFileName)
+    : path.join(__dirname, "..", "public", iconFileName);
 
   const win = new BrowserWindow({
     width: 1200,
@@ -70,11 +74,65 @@ function createWindow() {
   } else {
     win.loadFile(path.join(__dirname, "..", "dist", "index.html"));
   }
+
+  mainWindow = win;
+
+  win.on("closed", () => {
+    if (mainWindow === win) {
+      mainWindow = null;
+    }
+  });
+}
+
+function setupAutoUpdates() {
+  if (!app.isPackaged) {
+    return;
+  }
+
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on("checking-for-update", () => {
+    console.log("[updater] Checking for updates...");
+  });
+
+  autoUpdater.on("update-available", (info) => {
+    console.log(`[updater] Update available: ${info.version}`);
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    console.log("[updater] App is up to date.");
+  });
+
+  autoUpdater.on("error", (error) => {
+    console.error("[updater] Error while checking for updates:", error);
+  });
+
+  autoUpdater.on("update-downloaded", async (info) => {
+    console.log(`[updater] Update downloaded: ${info.version}`);
+
+    const result = await dialog.showMessageBox(mainWindow, {
+      type: "info",
+      buttons: ["Restart now", "Later"],
+      defaultId: 0,
+      cancelId: 1,
+      title: "Update ready",
+      message: "A new version has been downloaded.",
+      detail: "Restart now to install the update.",
+    });
+
+    if (result.response === 0) {
+      autoUpdater.quitAndInstall(false, true);
+    }
+  });
+
+  autoUpdater.checkForUpdatesAndNotify();
 }
 
 app.whenReady().then(() => {
   startBackend();
   createWindow();
+  setupAutoUpdates();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {

@@ -1,7 +1,7 @@
 {
   "name": "complaint-system",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
@@ -13,9 +13,11 @@
     "preview": "vite preview",
     "electron:dev": "vite",
     "electron:build": "vite build && electron-builder",
+    "electron:publish": "vite build && electron-builder --publish always",
     "electron:preview": "vite build && electron ."
   },
   "dependencies": {
+    "electron-updater": "^6.8.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.1"
@@ -54,13 +56,18 @@
     "files": [
       "dist/**/*",
       "dist-electron/**/*",
-      "public/app-icon.png"
+      "public/app-icon.png",
+      "public/app-icon.ico"
     ],
     "extraResources": [
       {
         "from": "../backend",
         "to": "backend",
-        "filter": ["**/*", "!node_modules/.cache/**", "!node_modules/.package-lock.json"]
+        "filter": [
+          "**/*",
+          "!node_modules/.cache/**",
+          "!node_modules/.package-lock.json"
+        ]
       },
       {
         "from": "../backend/node_modules",
@@ -69,18 +76,31 @@
       {
         "from": "public/app-icon.png",
         "to": "app-icon.png"
+      },
+      {
+        "from": "public/app-icon.ico",
+        "to": "app-icon.ico"
       }
     ],
     "win": {
-      "target": "dir",
-      "icon": "public/app-icon.png",
+      "target": "nsis",
+      "icon": "public/app-icon.ico",
       "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "mac": {
       "target": "dmg"
     },
     "linux": {
       "target": "AppImage"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "ved619",
+      "repo": "complaint-system"
     }
   }
 }

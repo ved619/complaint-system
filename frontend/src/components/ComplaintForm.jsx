@@ -163,12 +163,16 @@ function ComplaintForm({ apiFetch, complaintsApi, onSuccess, onClose }) {
               <label>
                 Contact No.
                 <input
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={10}
                   className={getFieldError("customerDetails.contactNo") ? "input-invalid" : ""}
                   value={customerDetails.contactNo}
-                  placeholder="+91 XXXXX XXXXX"
+                  placeholder="10-digit number"
                   onChange={(e) => {
                     clearFieldError("customerDetails.contactNo");
-                    setCustomerDetails((p) => ({ ...p, contactNo: e.target.value }));
+                    const contactNo = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setCustomerDetails((p) => ({ ...p, contactNo }));
                   }}
                 />
                 {getFieldError("customerDetails.contactNo") && (

@@ -52,6 +52,20 @@ describe('complaintValidation', () => {
     expect(errors['charges.gst']).toBeTruthy();
   });
 
+  it('requires contact number to be exactly 10 digits', () => {
+    const shortPayload = validPayload();
+    shortPayload.customerDetails.contactNo = '98765';
+    const shortErrors = validateComplaintForm(shortPayload);
+
+    expect(shortErrors['customerDetails.contactNo']).toBeTruthy();
+
+    const longPayload = validPayload();
+    longPayload.customerDetails.contactNo = '98765432101';
+    const longErrors = validateComplaintForm(longPayload);
+
+    expect(longErrors['customerDetails.contactNo']).toBeTruthy();
+  });
+
   it('validates spare qty when part names are entered', () => {
     const payload = validPayload();
     payload.spares = [{ replaced: 'Fan', replacedQty: 0, required: 'Board', requiredQty: 0 }];
