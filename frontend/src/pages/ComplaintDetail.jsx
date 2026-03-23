@@ -6,10 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useApi } from "../hooks/useApi";
 import { validateComplaintForm } from "../utils/complaintValidation";
 import { useToast } from "../context/ToastContext";
-
-const COMPLAINTS_API =
-  (import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth")
-    .replace(/\/api\/auth$/, "/api/complaints");
+import { COMPLAINTS_API } from "../config/api";
 
 const emptyItem = () => ({ itemName: "", remark: "" });
 const emptySpare = () => ({ replaced: "", replacedQty: 1, required: "", requiredQty: 1 });

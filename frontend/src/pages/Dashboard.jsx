@@ -6,10 +6,7 @@ import { STATUS_OPTIONS, getStatusLabel } from "../status";
 import { useAuth } from "../context/AuthContext";
 import { useApi } from "../hooks/useApi";
 import { useToast } from "../context/ToastContext";
-
-const COMPLAINTS_API =
-  (import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth")
-    .replace(/\/api\/auth$/, "/api/complaints");
+import { COMPLAINTS_API } from "../config/api";
 
 function StatusBadge({ status }) {
   const classMap = { OPEN: "status-open", IN_PROGRESS: "status-inprog", RESOLVED: "status-resolved" };

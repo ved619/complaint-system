@@ -61,19 +61,6 @@
     ],
     "extraResources": [
       {
-        "from": "../backend",
-        "to": "backend",
-        "filter": [
-          "**/*",
-          "!node_modules/.cache/**",
-          "!node_modules/.package-lock.json"
-        ]
-      },
-      {
-        "from": "../backend/node_modules",
-        "to": "backend/node_modules"
-      },
-      {
         "from": "public/app-icon.png",
         "to": "app-icon.png"
       },

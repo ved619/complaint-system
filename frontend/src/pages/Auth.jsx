@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/auth";
+import { AUTH_API } from "../config/api";
 
 function Auth() {
   const navigate = useNavigate();
@@ -29,7 +27,7 @@ function Auth() {
   });
 
   const endpoint = useMemo(() => {
-    return mode === "login" ? `${API_BASE_URL}/login` : `${API_BASE_URL}/register`;
+    return mode === "login" ? `${AUTH_API}/login` : `${AUTH_API}/register`;
   }, [mode]);
 
   const onChange = (event) => {
