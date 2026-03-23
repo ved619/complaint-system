@@ -130,7 +130,9 @@ function setupAutoUpdates() {
 }
 
 app.whenReady().then(() => {
-  startBackend();
+  if (!app.isPackaged) {
+    startBackend();
+  }
   createWindow();
   setupAutoUpdates();
 
